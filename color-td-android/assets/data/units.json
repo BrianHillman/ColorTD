@@ -1,0 +1,25 @@
+{
+    "enemies": [
+        {
+            "name": "Goblin",
+            "speed": 100,
+            "maxHealth": 2,
+            "sprite": "goblin.png",
+            "flying": false
+        },
+        {
+            "name": "Bird",
+            "speed": 5,
+            "maxHealth": 2,
+            "sprite": "bird.png",
+            "flying": true
+        },
+        {
+            "name": "Boss",
+            "speed": 2,
+            "maxHealth": 100,
+            "sprite": "boss1.png",
+            "flying": false
+        }
+    ]
+}
