@@ -55,8 +55,8 @@ public class GameScreen implements Screen{
 		Json json = new Json();
 		
 		EnemyLoader loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
-		for(int ii = 1; ii < 1000; ii++){
-			Enemy temp = loader.makeEnemy("Goblin", path,10f/1000*ii);
+		for(int ii = 1; ii < 21; ii++){
+			Enemy temp = loader.makeEnemy("Goblin", path,10f/20*ii);
 			stage.addActor(temp);
 		}
 		
