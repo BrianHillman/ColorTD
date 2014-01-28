@@ -1,8 +1,8 @@
-package com.me.mygdxgame;
+package com.brian.mygdxgame;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.me.mainscreens.ColorTD;
+import com.brian.mainscreens.ColorTD;
 
 public class Main {
 	public static void main(String[] args) {

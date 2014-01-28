@@ -1,4 +1,4 @@
-package com.me.mainscreens;
+package com.brian.mainscreens;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;

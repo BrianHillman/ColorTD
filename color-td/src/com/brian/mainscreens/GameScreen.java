@@ -1,10 +1,8 @@
 /**
  * 
  */
-package com.me.mainscreens;
+package com.brian.mainscreens;
 
-import mgmt.EnemyLoader;
-import mgmt.Pair;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,7 +14,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.me.actors.Enemy;
+import com.brian.actors.Enemy;
+import com.brian.util.EnemyLoader;
+import com.brian.util.Pair;
 
 /**
  * @author Brian

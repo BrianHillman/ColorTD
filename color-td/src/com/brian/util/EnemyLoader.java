@@ -1,4 +1,4 @@
-package mgmt;
+package com.brian.util;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
-import com.me.actors.Enemy;
+import com.brian.actors.Enemy;
 
 
 

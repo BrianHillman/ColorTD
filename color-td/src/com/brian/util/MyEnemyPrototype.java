@@ -1,4 +1,4 @@
-package mgmt;
+package com.brian.util;
 
 public class MyEnemyPrototype {
 	   public String name;
