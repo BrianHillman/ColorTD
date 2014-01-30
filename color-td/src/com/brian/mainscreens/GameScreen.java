@@ -5,6 +5,7 @@ package com.brian.mainscreens;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,11 +23,24 @@ import com.brian.util.Pair;
  * @author Brian
  *
  */
-public class GameScreen implements Screen{
+
+
+
+
+public class GameScreen implements Screen, InputProcessor {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
 	private Stage stage;
+	
+	
+	private final int GAMESTATEPAUSE = 0;
+	private final int GAMESTATEBETWEENROUNDS = 1;
+	private final int GAMESTATEROUND = 2;
+	
+	private int gameState = 1;
+	
+	 
 	
 	public GameScreen(){
 
@@ -113,6 +127,56 @@ public class GameScreen implements Screen{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		//we need to draw generic turret at current location if and only if there are less than 5 placed this round. 
+		
+		
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
