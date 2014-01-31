@@ -43,12 +43,15 @@ public class Enemy extends Actor{
 		step = 0;
 		this.path = path;
 		this.timeTillSpawn = timeTillSpawn;
-
+		super.setBounds(0, 0, sprite.getWidth(), sprite.getHeight());
+		
 	}
 	
 	@Override
 	public void act(float delta){
-		
+		if(super.getWidth() == 0){
+				Gdx.app.log("err", "bad enemy width");
+		}
 		super.act(delta);
 		
 		if(!spawned){

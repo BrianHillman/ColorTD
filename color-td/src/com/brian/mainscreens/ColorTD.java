@@ -15,8 +15,11 @@ public class ColorTD extends Game {
      
 	@Override
 	public void create() {		
+
 		mainMenuScreen = new MainMenuScreen();
 		gameScreen = new GameScreen();
+	    Gdx.input.setInputProcessor(gameScreen);
+
 		setScreen(gameScreen); 
 	}
 }
