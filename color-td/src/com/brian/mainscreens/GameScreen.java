@@ -89,7 +89,11 @@ public class GameScreen implements Screen, InputProcessor {
 		
 	}
 	
-	
+	public void makeNewTowers(){
+		
+		
+		
+	}
 	
 	@Override
 	public void render(float delta) {
@@ -99,6 +103,9 @@ public class GameScreen implements Screen, InputProcessor {
 		stage.act();
 		// draw the stage
 		stage.draw();
+		
+		
+		
 		
 		if(selected != null){
 			shapeRenderer.begin(ShapeType.Line);

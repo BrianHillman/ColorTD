@@ -6,7 +6,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.brian.util.Pair;
@@ -44,7 +46,20 @@ public class Enemy extends Actor{
 		this.path = path;
 		this.timeTillSpawn = timeTillSpawn;
 		super.setBounds(0, 0, sprite.getWidth(), sprite.getHeight());
-		
+		this.addListener(new ActorGestureListener() {
+	        public boolean longPress (Actor actor, float x, float y) {
+	                System.out.println("long press " + x + ", " + y);
+	                return true;
+	        }
+
+	        public void fling (InputEvent event, float velocityX, float velocityY, int button) {
+	                System.out.println("fling " + velocityX + ", " + velocityY);
+	        }
+
+	        public void zoom (InputEvent event, float initialDistance, float distance) {
+	                System.out.println("zoom " + initialDistance + ", " + distance);
+	        }
+		});
 	}
 	
 	@Override
