@@ -1,0 +1,12 @@
+{
+    "towers": [
+        {
+        	"name":"Prism",
+        	"attackSpeed":0,
+        	"sprite":"prism.png",
+        	"damage":0
+        }
+        	
+        	
+    ]
+}

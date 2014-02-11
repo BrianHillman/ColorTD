@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,8 +23,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.brian.actors.Enemy;
+import com.brian.actors.GenericTower;
+import com.brian.actors.UnevolvedTower;
 import com.brian.util.EnemyLoader;
 import com.brian.util.Pair;
+import com.brian.util.TowerLoader;
 
 /**
  * @author Brian
@@ -50,15 +54,30 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	public int gameState = 1;
 	
-	 public final int VIEWPORT_WIDTH = 800;
-	public final int VIEWPORT_HEIGHT = 480;
+	public final int VIEWPORT_WIDTH = 400;
+	public final int VIEWPORT_HEIGHT = 280;
+	
+	public GenericTower[] towersBeingPlaced = new GenericTower[5];
+	
+	EnemyLoader loader;
+	TowerLoader towerLoader;
+	
+	private FPSLogger fpsLogger;
+	
+	
+
 	public GameScreen(){
-		
+		fpsLogger = new FPSLogger();
 		this.stage = new Stage( VIEWPORT_WIDTH, VIEWPORT_HEIGHT, true );
-        //Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(stage);
+        
+		Json json = new Json();
+
+        loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
+        towerLoader = json.fromJson(TowerLoader.class, Gdx.files.internal("data/towers.json"));
+        createUnevolvedTowers();
         loadLevel(10);
-        
-        
+
 	}
 	
 	public void loadLevel(int x){
@@ -74,14 +93,13 @@ public class GameScreen implements Screen, InputProcessor {
 		path.add(new Pair(760,100));
 		path.add(new Pair(760,480));
 		
-		stage.clear();
+		//stage.clear();
 		//just loading a sample level for now.
 		
-		Json json = new Json();
 		
-		EnemyLoader loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
-		for(int ii = 1; ii < 2; ii++){
-			Enemy temp = loader.makeEnemy("Goblin", path,10f/20*ii);
+		 
+		for(int ii = 1; ii < 10; ii++){
+			Enemy temp = loader.makeEnemy("Goblin", path,10f/10*ii);
 			stage.addActor(temp);
 		}
 		
@@ -89,14 +107,12 @@ public class GameScreen implements Screen, InputProcessor {
 		
 	}
 	
-	public void makeNewTowers(){
-		
-		
-		
-	}
+	
 	
 	@Override
 	public void render(float delta) {
+	
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		// update the stage
@@ -107,16 +123,41 @@ public class GameScreen implements Screen, InputProcessor {
 		
 		
 		
-		if(selected != null){
-			shapeRenderer.begin(ShapeType.Line);
-			shapeRenderer.setColor(0,1,0,1);
-			shapeRenderer.rect(selected.getX()-5, selected.getY()-5, selected.getWidth()+10, selected.getHeight()+10);
-			shapeRenderer.end();
-		}
+		
+		
+		// output the current FPS
+        fpsLogger.log();
 		
 
 	}
-
+	
+	//if game's over open victory screen 
+	//else spawn 5 towers for them
+	public void endRound(){
+		
+		//TODO fix this lazy shit
+		
+		
+		
+	}
+	public void createUnevolvedTowers(){
+		Gdx.app.log("creating towers", "" );
+		int[] towerXYs = {	440,150,
+							420,150,
+							420, 130,
+							440,130,
+							430,110};
+		
+		
+		for( int x = 0; x < towersBeingPlaced.length; x++){
+				Gdx.app.log("created tower", "" );
+				UnevolvedTower temp = towerLoader.makeUnevolvedTower(towerXYs[x*2], towerXYs[x*2+1]);
+				towersBeingPlaced[x] = temp;
+				stage.addActor(temp);
+				Gdx.app.log("num actors", ""+stage.getActors().size );
+			}
+	}
+	
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
@@ -174,27 +215,37 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
+		Actor temp = selected;
+		
+		
+		
+		Vector2 stageCoords = new Vector2();
+		stage.screenToStageCoordinates(stageCoords.set(screenX,screenY));
+		
+
+		temp = stage.hit(stageCoords.x, stageCoords.y, true);
+		if( temp != null){
+			if(selected instanceof Enemy){
+				((Enemy) selected).isTouched = false;
+				
+			}
+			selected = temp;
+			
+		}
+		
+		
+		return stage.touchDown(screenX, screenY, pointer, button);
+		
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		stage.touchUp(screenX, screenY, pointer, button);
 		
 		
-		if (button == Input.Buttons.LEFT) {
-				Gdx.app.log("touchUp", "X:"+screenX+"\tY:"+screenY );
-				
-				Vector2 pos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-				stage.screenToStageCoordinates(pos);
-				
-	          selected = stage.hit(pos.x, pos.y, true);
-	          
-	          return true;     
-	      }
 		return false;
 	}
-
+	
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		//we need to draw generic turret at current location if and only if there are less than 5 placed this round. 
@@ -215,5 +266,5 @@ public class GameScreen implements Screen, InputProcessor {
 		return false;
 	}
 	
-	
+
 }

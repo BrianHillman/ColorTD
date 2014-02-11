@@ -5,7 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
@@ -26,7 +30,7 @@ public class Enemy extends Actor{
 	int health;
 	int maxHealth;
 	Sprite sprite;
-	
+	public Sprite highlightedSprite;
 	boolean flying;
 	String name;
 	
@@ -34,6 +38,9 @@ public class Enemy extends Actor{
 	float timeTillSpawn;
 	
 	boolean spawned;
+	
+	public boolean isTouched;
+	
 	
 	public Enemy(String name, int hp, int speed, Sprite sprite, Boolean flying,Array<Pair> path, float timeTillSpawn){
 		this.name = name;
@@ -47,18 +54,22 @@ public class Enemy extends Actor{
 		this.timeTillSpawn = timeTillSpawn;
 		super.setBounds(0, 0, sprite.getWidth(), sprite.getHeight());
 		this.addListener(new ActorGestureListener() {
-	        public boolean longPress (Actor actor, float x, float y) {
-	                System.out.println("long press " + x + ", " + y);
-	                return true;
+			
+			
+			@Override
+	        public void touchUp(InputEvent event, float x, float y,
+	                int pointer, int button) {
+	                Gdx.app.log("Mouse", "up");
 	        }
-
-	        public void fling (InputEvent event, float velocityX, float velocityY, int button) {
-	                System.out.println("fling " + velocityX + ", " + velocityY);
-	        }
-
-	        public void zoom (InputEvent event, float initialDistance, float distance) {
-	                System.out.println("zoom " + initialDistance + ", " + distance);
-	        }
+			
+			@Override
+			public void touchDown(InputEvent event, float x, float y,
+		               int pointer, int button) {
+						isTouched = true;
+		            //do your stuff it will work when u touched your actor
+		               Gdx.app.log("Mouse", "down");
+		        }
+		
 		});
 	}
 	
@@ -105,20 +116,42 @@ public class Enemy extends Actor{
 				step += 1;
 			}
 		}
+	
 	}
 	
 	
 	private void spawn(){
 		spawned = true;
-		
 	}
 	
 	
+	public void drawBorder(){
+		Vector2 stageCoords = new Vector2();
+		localToParentCoordinates(stageCoords.set(this.getX(),this.getY()));
+		
+		
+		ShapeRenderer shapeRenderer = new ShapeRenderer(100);
+		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.setColor(0,1,0,1);
+		shapeRenderer.rect(stageCoords.x-5, stageCoords.y-5, 1, 1);
+		//shapeRenderer.rect(stageCoords.x-5, stageCoords.y-5, super.getWidth()+10, super.getHeight()+10);
+		shapeRenderer.end();	
+		
+	}
 	
 	@Override
 	public void draw (SpriteBatch batch, float parentAlpha) {
 		sprite.setPosition(super.getX(), super.getY());
+		highlightedSprite.setPosition(super.getX()-(highlightedSprite.getWidth() - super.getWidth())/2, super.getY()-(highlightedSprite.getHeight() - super.getHeight())/2);
 		if(spawned)sprite.draw(batch);
+		
+		if (isTouched ){
+			//batch.end();
+			//drawBorder();
+			//batch.begin();
+			highlightedSprite.draw(batch);
+			
+		}
 	
 	}
 	
