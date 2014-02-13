@@ -7,14 +7,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class UnevolvedTower extends GenericTower{
 	public int spawnX;
 	public int spawnY;
-	private Sprite sprite;
+	
 	
 	public UnevolvedTower(int x, int y,Sprite sprite) {
+		
 		super(x, y);
+		this.sprite = sprite;
 		spawnX = x;
 		spawnY = y;
 		super.name = "Prism";
-		this.sprite = sprite;
+		super.size( sprite.getWidth(), sprite.getHeight());
+
+		
 		
 	}
 	public void  moveTo(int x,int y){
@@ -25,8 +29,7 @@ public class UnevolvedTower extends GenericTower{
 	
 	@Override
 	public void draw (SpriteBatch batch, float parentAlpha) {
-		sprite.setPosition(super.getX(), super.getY());
-		sprite.draw(batch);
+		super.draw(batch, parentAlpha);
 	}
 	
 	

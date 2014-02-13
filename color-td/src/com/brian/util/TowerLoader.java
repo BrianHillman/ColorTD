@@ -15,7 +15,6 @@ public class TowerLoader {
 	private HashMap<String, Sprite> spriteStore = new HashMap<String, Sprite>();
 	
 	public GenericTower makeTower(String name, int posx, int posy){
-		Sprite sprite;
 		//special case for unevolved towers
 		
 		
@@ -27,16 +26,11 @@ public class TowerLoader {
 			System.out.println("Tower not found");
 			System.exit(0);
 		}
-		if(spriteStore.containsKey(temp.sprite.toLowerCase())){
-			Gdx.app.log("test", "loaded from spritestore");
-			sprite = spriteStore.get(temp.sprite.toLowerCase());
-		}else{
-		
-			sprite= new Sprite(new Texture(Gdx.files.internal("data/sprites/"+temp.sprite.toLowerCase())));
-			spriteStore.put(temp.sprite.toLowerCase(), sprite);
-		}
+		Sprite sprite = getSprite(temp.sprite);
+
 		
 		GenericTower e = new GenericTower(posx,posy,name,sprite, temp.attackSpeed, temp.damage);
+		e.highlightedSprite = getSprite(((int)sprite.getHeight())+"_border.png");
 		return e;
 	}
 	
@@ -50,18 +44,28 @@ public class TowerLoader {
 			System.exit(0);
 		}
 		
-		Sprite sprite;
+		Sprite sprite = getSprite(temp.sprite);
 
-		if(spriteStore.containsKey(temp.sprite.toLowerCase())){
-			
-			sprite = spriteStore.get(temp.sprite.toLowerCase());
-		}else{
-			Gdx.app.log("test", "loaded from mem");
-			sprite = new Sprite(new Texture(Gdx.files.internal("data/sprites/"+temp.sprite.toLowerCase())));
-			spriteStore.put(temp.sprite.toLowerCase(), sprite);
-		}
+		
 		Gdx.app.log("test", "" + (sprite == null));
-		return new UnevolvedTower(posx, posy, sprite);
+		
+		UnevolvedTower e = new UnevolvedTower(posx, posy, sprite);
+		e.highlightedSprite = getSprite(((int)sprite.getHeight()+"_border.png"));
+		return e; 
 	}
 	
+	
+	
+	public Sprite getSprite(String sprite){
+		Sprite tempsprite;
+
+		if(spriteStore.containsKey(sprite.toLowerCase())){
+			tempsprite = spriteStore.get(sprite.toLowerCase());
+		}else{
+		
+			tempsprite = new Sprite(new Texture(Gdx.files.internal("data/sprites/"+sprite.toLowerCase())));
+			spriteStore.put(sprite.toLowerCase(), tempsprite);
+		}
+		return tempsprite;
+	}
 }

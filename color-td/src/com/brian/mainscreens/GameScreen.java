@@ -45,9 +45,9 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	Actor selected = null;
 	
-	 ShapeRenderer shapeRenderer = new ShapeRenderer();
-
-	 
+	ShapeRenderer shapeRenderer = new ShapeRenderer();
+	
+	
 	private final int GAMESTATEPAUSE = 0;
 	private final int GAMESTATEBETWEENROUNDS = 1;
 	private final int GAMESTATEROUND = 2;
@@ -67,7 +67,6 @@ public class GameScreen implements Screen, InputProcessor {
 	
 
 	public GameScreen(){
-		fpsLogger = new FPSLogger();
 		this.stage = new Stage( VIEWPORT_WIDTH, VIEWPORT_HEIGHT, true );
         Gdx.input.setInputProcessor(stage);
         
@@ -125,8 +124,6 @@ public class GameScreen implements Screen, InputProcessor {
 		
 		
 		
-		// output the current FPS
-        fpsLogger.log();
 		
 
 	}
@@ -224,10 +221,13 @@ public class GameScreen implements Screen, InputProcessor {
 		
 
 		temp = stage.hit(stageCoords.x, stageCoords.y, true);
+		
 		if( temp != null){
 			if(selected instanceof Enemy){
 				((Enemy) selected).isTouched = false;
 				
+			}else if(selected instanceof GenericTower){
+				((GenericTower) selected).isTouched = false;
 			}
 			selected = temp;
 			
