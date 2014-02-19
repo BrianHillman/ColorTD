@@ -12,6 +12,8 @@ import com.brian.actors.UnevolvedTower;
 public class TowerLoader {
 	
 	private ArrayList<MyTowerPrototype> towers;
+	private ArrayList<MyBulletPrototype> bullets;
+	
 	private HashMap<String, Sprite> spriteStore = new HashMap<String, Sprite>();
 	
 	public GenericTower makeTower(String name, int posx, int posy){
@@ -24,12 +26,28 @@ public class TowerLoader {
 		}
 		if(temp == null){
 			System.out.println("Tower not found");
-			System.exit(0);
+			System.exit(1);
 		}
-		Sprite sprite = getSprite(temp.sprite);
-
 		
-		GenericTower e = new GenericTower(posx,posy,name,sprite, temp.attackSpeed, temp.damage);
+		
+		MyBulletPrototype bullet = null ;
+		for(int x = 0; x < bullets.size() ; x++){
+			if(bullets.get(x).name.equalsIgnoreCase(name)) bullet = bullets.get(x);
+		}
+		if(temp == null){
+			System.out.println("Bullet not found");
+			System.exit(1);
+		}
+		
+		Sprite sprite = getSprite(temp.sprite);
+		
+		
+		Sprite bulletSprite = getSprite(bullet.spriteName);
+		bullet.sprite = bulletSprite;
+		bullet.damage = temp.damage;
+		
+		GenericTower e = new GenericTower(posx,posy,name,sprite, temp.attackSpeed, temp.damage, bullet);
+		
 		e.highlightedSprite = getSprite(((int)sprite.getHeight())+"_border.png");
 		return e;
 	}
@@ -68,4 +86,6 @@ public class TowerLoader {
 		}
 		return tempsprite;
 	}
+	
+	
 }

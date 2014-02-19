@@ -11,6 +11,10 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 800;
 		cfg.height = 480;
+		cfg.vSyncEnabled = false; 
+		cfg.foregroundFPS = 0;
+
 		new LwjglApplication(new ColorTD(), cfg);
+		
 	}
 }

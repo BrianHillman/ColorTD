@@ -155,5 +155,14 @@ public class Enemy extends Actor{
 	
 	}
 	
-	
+	public boolean handleHit(Bullet x){
+		this.health -= x.damage;
+		
+		if(this.health <= 0){
+			this.remove();
+		}
+		
+		return true;
+		
+	}
 }

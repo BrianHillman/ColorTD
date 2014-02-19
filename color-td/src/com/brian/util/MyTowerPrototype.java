@@ -5,4 +5,5 @@ public class MyTowerPrototype {
 		   public int attackSpeed;
 		   public String sprite;
 		   public int damage;
+		   public String bullet;
 }

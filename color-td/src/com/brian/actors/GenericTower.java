@@ -9,17 +9,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.brian.util.MyBulletPrototype;
 
 public class GenericTower extends Actor{
-	 public String name;
+	public String name;
 	   public int attackSpeed;
+	   
 	   public Sprite sprite;
 	   public Sprite highlightedSprite;
+	   public MyBulletPrototype bullet; 
+	   
+	   
 	   public int damage;
-	public boolean isTouched;
-
+	   public boolean isTouched;
+	   private float timeSinceLastAttack;
 	
-	public GenericTower(int x, int y, String name, Sprite sprite, int attackSpeed, int damage){
+	public GenericTower(int x, int y, String name, Sprite sprite, int attackSpeed, int damage, MyBulletPrototype bullet){
 		super.setX(x);
 		super.setY(y);
 		this.sprite = sprite;
@@ -27,10 +33,10 @@ public class GenericTower extends Actor{
 		this.name = name;
 		this.damage = damage; 
 		isTouched = false;
-		
+		this.bullet = bullet;
 		
 		addListener();
-
+		
 
 	}
 	
@@ -60,27 +66,28 @@ public class GenericTower extends Actor{
 			
 		}
 	}
-	private void addListener(){
-		Gdx.app.log("reg", "listener");
+
+	private void addListener() {
+
 		this.addListener(new ActorGestureListener() {
-			
-			
+
 			@Override
-	        public void touchUp(InputEvent event, float x, float y,
-	                int pointer, int button) {
-	                Gdx.app.log("Mouse", "up");
-	        }
-			
+			public void touchUp(InputEvent event, float x, float y,
+					int pointer, int button) {
+				Gdx.app.log("Mouse", "up");
+			}
+
 			@Override
 			public void touchDown(InputEvent event, float x, float y,
-		               int pointer, int button) {
-						isTouched = true;
-		            //do your stuff it will work when u touched your actor
-		               Gdx.app.log("Mouse", "down");
-		        }
-		
+				int pointer, int button) {
+				isTouched = true;
+				Gdx.app.log("TouchDown", name);
+			}
+
 		});
+
 		
+
 	}
 	
 }

@@ -42,7 +42,6 @@ public class GameScreen implements Screen, InputProcessor {
 	private SpriteBatch batch;
 	private Texture texture;
 	private Stage stage;
-	
 	Actor selected = null;
 	
 	ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -69,9 +68,10 @@ public class GameScreen implements Screen, InputProcessor {
 	public GameScreen(){
 		this.stage = new Stage( VIEWPORT_WIDTH, VIEWPORT_HEIGHT, true );
         Gdx.input.setInputProcessor(stage);
-        
+        fpsLogger = new FPSLogger();
 		Json json = new Json();
 
+		
         loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
         towerLoader = json.fromJson(TowerLoader.class, Gdx.files.internal("data/towers.json"));
         createUnevolvedTowers();
@@ -118,7 +118,7 @@ public class GameScreen implements Screen, InputProcessor {
 		stage.act();
 		// draw the stage
 		stage.draw();
-		
+		fpsLogger.log();
 		
 		
 		
@@ -240,18 +240,16 @@ public class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		stage.touchUp(screenX, screenY, pointer, button);
 		
 		
-		return false;
+		return stage.touchUp(screenX, screenY, pointer, button);
 	}
 	
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		//we need to draw generic turret at current location if and only if there are less than 5 placed this round. 
 		
 		
-		return false;
+		return stage.touchDragged(screenX, screenY, pointer);
 	}
 
 	@Override
