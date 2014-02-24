@@ -40,6 +40,7 @@ public class UnevolvedTower extends GenericTower{
 			}
 
 		}));
+		
 		this.addListener(new ActorGestureListener() {
 			@Override
 			public void touchDown(InputEvent event, float x, float y,
@@ -48,9 +49,10 @@ public class UnevolvedTower extends GenericTower{
 			}
 
 		});
-		
+	
 		
 	}
+	
 	
 	private void setDYDX(float x, float y){
 		dx =  x - sprite.getOriginX() + sprite.getWidth()/2;

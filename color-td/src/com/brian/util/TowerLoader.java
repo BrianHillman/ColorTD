@@ -41,12 +41,14 @@ public class TowerLoader {
 		
 		Sprite sprite = getSprite(temp.sprite);
 		
-		
-		Sprite bulletSprite = getSprite(bullet.spriteName);
-		bullet.sprite = bulletSprite;
-		bullet.damage = temp.damage;
-		
+		if(bullet != null){
+			Sprite bulletSprite = getSprite(bullet.spriteName);
+			bullet.sprite = bulletSprite;
+			bullet.damage = temp.damage;
+		}
 		GenericTower e = new GenericTower(posx,posy,name,sprite, temp.attackSpeed, temp.damage, bullet);
+		
+		if(bullet == null)e.canAttack = false; 
 		
 		e.highlightedSprite = getSprite(((int)sprite.getHeight())+"_border.png");
 		return e;

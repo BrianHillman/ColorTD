@@ -20,10 +20,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.brian.actors.Enemy;
 import com.brian.actors.GenericTower;
+import com.brian.actors.KeepButton;
 import com.brian.actors.UnevolvedTower;
 import com.brian.util.EnemyLoader;
 import com.brian.util.Pair;
@@ -63,7 +68,7 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	private FPSLogger fpsLogger;
 	
-	
+	KeepButton keepButton = new KeepButton();
 
 	public GameScreen(){
 		this.stage = new Stage( VIEWPORT_WIDTH, VIEWPORT_HEIGHT, true );
@@ -72,11 +77,16 @@ public class GameScreen implements Screen, InputProcessor {
 		Json json = new Json();
 
 		
+		
+	
+        
+        
+   
         loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
         towerLoader = json.fromJson(TowerLoader.class, Gdx.files.internal("data/towers.json"));
         createUnevolvedTowers();
-        loadLevel(10);
-
+        
+        stage.addActor(keepButton);
 	}
 	
 	public void loadLevel(int x){
@@ -213,7 +223,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Actor temp = selected;
-		
+
 		
 		
 		Vector2 stageCoords = new Vector2();
@@ -223,15 +233,23 @@ public class GameScreen implements Screen, InputProcessor {
 		temp = stage.hit(stageCoords.x, stageCoords.y, true);
 		
 		if( temp != null){
+			
 			if(selected instanceof Enemy){
 				((Enemy) selected).isTouched = false;
 				
 			}else if(selected instanceof GenericTower){
+				
 				((GenericTower) selected).isTouched = false;
+				
+			}
+			
+			if(temp instanceof KeepButton && selected instanceof UnevolvedTower){
+				upgrade((UnevolvedTower) selected);
 			}
 			selected = temp;
 			
 		}
+		
 		
 		
 		return stage.touchDown(screenX, screenY, pointer, button);
@@ -264,5 +282,36 @@ public class GameScreen implements Screen, InputProcessor {
 		return false;
 	}
 	
+	public void upgrade(UnevolvedTower tower){
+		System.out.println("Upgrading");
+		for(int x = 0; x < towersBeingPlaced.length; x++){
+			if(tower != towersBeingPlaced[x] ){
+				
+				stage.addActor(towerLoader.makeTower("wall", (int) towersBeingPlaced[x].getX(), (int) towersBeingPlaced[x].getY()));
+				towersBeingPlaced[x].remove();
+				towersBeingPlaced[x] = null;
+				
+			}else{
+				//TODO update tower evolving
+				
+				GenericTower newTower = towerLoader.makeTower("Green 1", (int) towersBeingPlaced[x].getX(), (int) towersBeingPlaced[x].getY());
+				stage.addActor(newTower);
+				towersBeingPlaced[x].remove();
+				towersBeingPlaced[x] = null;
+			}
+		}
+		
+		loadLevel(10);
+	}
+	
+	public void UI(){
+		//combine button. 
+		
+		//keep tower button.
+		
+		
+		
+		
+	}
 
 }

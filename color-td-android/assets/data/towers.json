@@ -15,6 +15,14 @@
         	"damage":5,
         	"bullet":"Standard"
         	
+        },
+        {
+            "name":"Wall",
+        	"attackSpeed":0,
+        	"sprite":"wall.png",
+        	"damage":0,
+        	"bullet":"none"
+        	
         }
         
     ],

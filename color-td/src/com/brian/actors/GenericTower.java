@@ -24,7 +24,9 @@ public class GenericTower extends Actor{
 	   public int damage;
 	   public boolean isTouched;
 	   private float timeSinceLastAttack;
-	
+	   
+	   public boolean canAttack = true;
+	   
 	public GenericTower(int x, int y, String name, Sprite sprite, int attackSpeed, int damage, MyBulletPrototype bullet){
 		super.setX(x);
 		super.setY(y);
