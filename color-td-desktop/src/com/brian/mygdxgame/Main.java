@@ -17,8 +17,8 @@ public class Main {
 		 * Enable to uncap fps, ~ 4700 now :)
 		 * 
 		 */		
-		cfg.vSyncEnabled = false; 
-		cfg.foregroundFPS = 0;
+		//cfg.vSyncEnabled = false; 
+		//cfg.foregroundFPS = 0;
 		
 		new LwjglApplication(new ColorTD(), cfg);
 		

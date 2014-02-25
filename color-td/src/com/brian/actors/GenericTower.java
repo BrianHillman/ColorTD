@@ -15,7 +15,7 @@ import com.brian.util.MyBulletPrototype;
 public class GenericTower extends Actor{
 	public String name;
 	   public int attackSpeed;
-	   
+	   public int range;
 	   public Sprite sprite;
 	   public Sprite highlightedSprite;
 	   public MyBulletPrototype bullet; 
@@ -27,7 +27,7 @@ public class GenericTower extends Actor{
 	   
 	   public boolean canAttack = true;
 	   
-	public GenericTower(int x, int y, String name, Sprite sprite, int attackSpeed, int damage, MyBulletPrototype bullet){
+	public GenericTower(int x, int y, String name, Sprite sprite, int attackSpeed, int damage,int range, MyBulletPrototype bullet){
 		super.setX(x);
 		super.setY(y);
 		this.sprite = sprite;
@@ -36,10 +36,10 @@ public class GenericTower extends Actor{
 		this.damage = damage; 
 		isTouched = false;
 		this.bullet = bullet;
-		
+		this.range = range;
 		addListener();
 		
-
+		
 	}
 	
 
@@ -68,7 +68,22 @@ public class GenericTower extends Actor{
 			
 		}
 	}
+	
+	@Override 
+	public void act(float delta){
+		if(attackSpeed == 0){
+			
+		}else if(timeSinceLastAttack > 1.0f/attackSpeed ){
 
+			if(AttemptAttack()){
+				timeSinceLastAttack = 0;
+			}
+		}else{
+			timeSinceLastAttack += delta;
+		}
+		
+	}
+	
 	private void addListener() {
 
 		this.addListener(new ActorGestureListener() {
@@ -92,4 +107,28 @@ public class GenericTower extends Actor{
 
 	}
 	
+	private boolean AttemptAttack(){
+		
+		for(int x = 0; x < super.getStage().getActors().size; x++){
+			if(super.getStage().getActors().get(x) instanceof Enemy){
+				//perform range check
+				Vector2 enemyPos = ((Enemy) super.getStage().getActors().get(x)).getCenter();
+				double dist =  Math.sqrt( Math.pow(enemyPos.x - super.getX() + super.getWidth(), 2)  +  
+						Math.pow(enemyPos.y - super.getY() + super.getHeight(), 2));
+				
+				if(dist <= range){
+					Bullet shot  = new Bullet((Enemy) super.getStage().getActors().get(x), bullet.damage, bullet.speed, bullet.type, bullet.sprite, sprite.getHeight()/2 + getX(), sprite.getWidth()/2 + getY());
+					super.getStage().addActor(shot);
+					Gdx.app.log("Attacking", "PEW PEW PEW");
+					return true;
+				}
+				
+			}
+			
+			
+		}
+		
+		
+		return false;
+	}
 }

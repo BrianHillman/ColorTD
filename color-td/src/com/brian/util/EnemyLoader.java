@@ -33,7 +33,6 @@ public class EnemyLoader {
 		
 		Sprite sprite = getSprite(temp.sprite);;
 		
-	//	Sprite sprite = new Sprite(new Texture(Gdx.files.internal("data/sprites/"+temp.sprite.toLowerCase())));
 		Enemy e  = new Enemy(temp.name, temp.maxHealth, temp.speed, sprite, temp.flying, path,timeTillSpawn);
 		
 		e.highlightedSprite = getSprite(((int)sprite.getHeight())+"_border.png");

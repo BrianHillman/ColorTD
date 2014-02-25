@@ -5,14 +5,16 @@
         	"attackSpeed":0,
         	"sprite":"prism.png",
         	"damage":0,
+        	"range":50,
         	"bullet":"none"
         	
         },
         {
             "name":"Green 1",
-        	"attackSpeed":2,
+        	"attackSpeed":1,
         	"sprite":"green1.png",
         	"damage":5,
+        	"range":50,
         	"bullet":"Standard"
         	
         },
@@ -21,7 +23,9 @@
         	"attackSpeed":0,
         	"sprite":"wall.png",
         	"damage":0,
+        	"range":50,
         	"bullet":"none"
+        	
         	
         }
         
@@ -32,7 +36,7 @@
 			"damage":1,
 			"type":"Normal",
 			"speed":100,
-			"spriteName":"bullet.jpg"
+			"spriteName":"bullet.png"
           
           }
       ]

@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class KeepButton extends Actor	{
 	final String text = "Keep";
 	BitmapFont font = new BitmapFont(); ;
-	final float posX = font.getBounds(text).width;
-	final float posY = font.getBounds(text).height;
+	final float posX = 420;
+	final float posY = 30;
 	
 	public KeepButton(){
 		super.setOrigin(posX, posX);

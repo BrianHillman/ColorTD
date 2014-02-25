@@ -165,4 +165,10 @@ public class Enemy extends Actor{
 		return true;
 		
 	}
+	
+	public Vector2 getCenter(){
+		Vector2 z = new Vector2(super.getWidth()/2 + super.getX(), super.getHeight()/2 + super.getY());
+		return z;
+		
+	}
 }

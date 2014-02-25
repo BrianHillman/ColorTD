@@ -6,4 +6,5 @@ public class MyTowerPrototype {
 		   public String sprite;
 		   public int damage;
 		   public String bullet;
+		   public int range;
 }

@@ -32,22 +32,27 @@ public class TowerLoader {
 		
 		MyBulletPrototype bullet = null ;
 		for(int x = 0; x < bullets.size() ; x++){
-			if(bullets.get(x).name.equalsIgnoreCase(name)) bullet = bullets.get(x);
+			
+			if(bullets.get(x).name.equalsIgnoreCase(temp.bullet)) bullet = bullets.get(x);
 		}
-		if(temp == null){
-			System.out.println("Bullet not found");
+		
+		
+		if(bullet == null && !temp.bullet.equalsIgnoreCase("none")){
+			System.out.println("Bullet not found:" + temp.bullet);
 			System.exit(1);
 		}
 		
 		Sprite sprite = getSprite(temp.sprite);
 		
 		if(bullet != null){
+			System.out.println("test 1");
 			Sprite bulletSprite = getSprite(bullet.spriteName);
 			bullet.sprite = bulletSprite;
 			bullet.damage = temp.damage;
 		}
-		GenericTower e = new GenericTower(posx,posy,name,sprite, temp.attackSpeed, temp.damage, bullet);
 		
+		GenericTower e = new GenericTower(posx,posy,name,sprite, temp.attackSpeed, temp.damage, temp.range, bullet);
+		System.out.println(temp.name + " range" + temp.range);
 		if(bullet == null)e.canAttack = false; 
 		
 		e.highlightedSprite = getSprite(((int)sprite.getHeight())+"_border.png");

@@ -1,6 +1,8 @@
 package com.brian.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -11,11 +13,12 @@ public class Bullet extends Actor{
 	Sprite sprite;
 	String effects;
 	
-	public Bullet(Enemy target,int damage, int speed, String effects, Sprite sprite){
+	public Bullet(Enemy target,int damage, int speed, String effects, Sprite sprite, float posx , float posy){
 		this.damage = damage;
 		this.target = target;
 		this.effects = effects;
 		this.sprite = sprite;
+		this.setPosition(posx, posy);
 	}
 	
 	
@@ -29,7 +32,7 @@ public class Bullet extends Actor{
 			//apply all HitEffects to target.
 			//remove self.
 		Vector2 direction = new Vector2(target.getX()-this.getX()+target.getWidth()/2,target.getY()-this.getY()+target.getHeight()/2).nor();
-		setPosition(this.getX()+direction.x*speed*delta,this.getY()+direction.y*speed*delta);
+		//setPosition(this.getX() + direction.x*speed*delta,this.getY()+direction.y*speed*delta);
 		
 		if(target.hit(this.getX(), this.getY(), true) != null){
 			remove();
@@ -39,6 +42,11 @@ public class Bullet extends Actor{
 		//speed += Math.pow(1.1, delta);
 	}
 	
-	
+	@Override
+	public void draw (SpriteBatch batch, float parentAlpha) {
+		sprite.setPosition(super.getX(), super.getY());
+		Gdx.app.log("bullet", ""+getX() + " , "+getY());
+		sprite.draw(batch);
+	}
 	
 }
