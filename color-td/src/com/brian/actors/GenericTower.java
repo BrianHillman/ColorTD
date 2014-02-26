@@ -111,15 +111,19 @@ public class GenericTower extends Actor{
 		
 		for(int x = 0; x < super.getStage().getActors().size; x++){
 			if(super.getStage().getActors().get(x) instanceof Enemy){
+				if(!((Enemy) super.getStage().getActors().get(x)).isVisible()){
+					continue;
+				}
+				
 				//perform range check
 				Vector2 enemyPos = ((Enemy) super.getStage().getActors().get(x)).getCenter();
 				double dist =  Math.sqrt( Math.pow(enemyPos.x - super.getX() + super.getWidth(), 2)  +  
 						Math.pow(enemyPos.y - super.getY() + super.getHeight(), 2));
 				
-				if(dist <= range){
+				if(dist <= range ){
 					Bullet shot  = new Bullet((Enemy) super.getStage().getActors().get(x), bullet.damage, bullet.speed, bullet.type, bullet.sprite, sprite.getHeight()/2 + getX(), sprite.getWidth()/2 + getY());
 					super.getStage().addActor(shot);
-					Gdx.app.log("Attacking", "PEW PEW PEW");
+					Gdx.app.log("Attacking", "PEW PEW PEW " + ((Enemy) super.getStage().getActors().get(x)).hashCode());
 					return true;
 				}
 				

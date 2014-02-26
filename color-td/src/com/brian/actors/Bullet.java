@@ -17,6 +17,7 @@ public class Bullet extends Actor{
 		this.damage = damage;
 		this.target = target;
 		this.effects = effects;
+		this.speed = speed;
 		this.sprite = sprite;
 		this.setPosition(posx, posy);
 	}
@@ -31,21 +32,32 @@ public class Bullet extends Actor{
 		//if it hit then:
 			//apply all HitEffects to target.
 			//remove self.
-		Vector2 direction = new Vector2(target.getX()-this.getX()+target.getWidth()/2,target.getY()-this.getY()+target.getHeight()/2).nor();
-		//setPosition(this.getX() + direction.x*speed*delta,this.getY()+direction.y*speed*delta);
 		
-		if(target.hit(this.getX(), this.getY(), true) != null){
+		
+		Vector2 direction = new Vector2(target.getCenter().x - (this.getX()+this.getWidth()/2),
+				
+								target.getCenter().y - (this.getY()+this.getHeight()/2));
+		
+		if(Math.abs(direction.x) < 10 & Math.abs(direction.y) <  10) {
+			Gdx.app.log("bullet", "hit target");
+			target.handleHit(this);
 			remove();
 		}
-		//accelerate
-		//causes no collisions
-		//speed += Math.pow(1.1, delta);
+		
+		direction.nor();
+		direction.set(this.getX() + direction.x*speed*delta, this.getY()+direction.y*speed*delta);
+		//direction.set(target.getCenter().x, target.getCenter().y);
+		
+		setPosition(direction.x,direction.y);
+		
+		
+
 	}
 	
 	@Override
 	public void draw (SpriteBatch batch, float parentAlpha) {
-		sprite.setPosition(super.getX(), super.getY());
-		Gdx.app.log("bullet", ""+getX() + " , "+getY());
+		sprite.setPosition(getX(), getY());
+		//Gdx.app.log("bullet", ""+getX() + " , "+getY());
 		sprite.draw(batch);
 	}
 	

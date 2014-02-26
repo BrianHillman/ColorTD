@@ -13,7 +13,7 @@ public class Main {
 		cfg.height = 480;
 		
 		
-		/*
+		/*speedspeedspeedspeed
 		 * Enable to uncap fps, ~ 4700 now :)
 		 * 
 		 */		

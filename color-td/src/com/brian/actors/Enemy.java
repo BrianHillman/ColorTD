@@ -45,6 +45,7 @@ public class Enemy extends Actor{
 	public Enemy(String name, int hp, int speed, Sprite sprite, Boolean flying,Array<Pair> path, float timeTillSpawn){
 		this.name = name;
 		this.maxHealth = hp;
+		this.health = hp;
 		this.speed = speed;
 		spawned = false; 
 		this.sprite = sprite;
@@ -71,6 +72,9 @@ public class Enemy extends Actor{
 		        }
 		
 		});
+		super.setVisible(false);
+		Gdx.app.log("Enemy", "Created enemy " + name + "  HP: "+hp);
+		
 	}
 	
 	@Override
@@ -121,6 +125,7 @@ public class Enemy extends Actor{
 	
 	
 	private void spawn(){
+		super.setVisible(true);
 		spawned = true;
 	}
 	

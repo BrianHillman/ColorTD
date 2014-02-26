@@ -11,7 +11,7 @@
         },
         {
             "name":"Green 1",
-        	"attackSpeed":1,
+        	"attackSpeed":2,
         	"sprite":"green1.png",
         	"damage":5,
         	"range":50,
@@ -33,9 +33,9 @@
       "bullets":[
           {
           	"name":"Standard",
-			"damage":1,
+			"damage":5,
 			"type":"Normal",
-			"speed":100,
+			"speed":200,
 			"spriteName":"bullet.png"
           
           }

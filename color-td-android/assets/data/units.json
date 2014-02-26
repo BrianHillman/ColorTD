@@ -3,7 +3,7 @@
         {
             "name": "Goblin",
             "speed": 100,
-            "maxHealth": 2,
+            "maxHealth": 10,
             "sprite": "goblin.png",
             "flying": false
         },
