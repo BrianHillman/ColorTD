@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,7 +20,7 @@ public class GenericTower extends Actor{
 	   public Sprite sprite;
 	   public Sprite highlightedSprite;
 	   public MyBulletPrototype bullet; 
-	   
+	   public Rectangle rect;
 	   
 	   public int damage;
 	   public boolean isTouched;
@@ -28,18 +29,16 @@ public class GenericTower extends Actor{
 	   public boolean canAttack = true;
 	   
 	public GenericTower(int x, int y, String name, Sprite sprite, int attackSpeed, int damage,int range, MyBulletPrototype bullet){
-		super.setX(x);
-		super.setY(y);
+		this(x, y);
+
 		this.sprite = sprite;
 		this.attackSpeed = attackSpeed;
 		this.name = name;
 		this.damage = damage; 
-		isTouched = false;
 		this.bullet = bullet;
 		this.range = range;
-		addListener();
-		
-		
+		rect = new Rectangle(x,y,sprite.getWidth(),sprite.getHeight());
+
 	}
 	
 
@@ -51,12 +50,12 @@ public class GenericTower extends Actor{
 		isTouched = false;
 		addListener();
 		
-		
 	}
 	
 	@Override
 	public void draw (SpriteBatch batch, float parentAlpha) {
 		sprite.setPosition(super.getX(), super.getY());
+		
 		sprite.draw(batch);
 		
 		//draws the border around the sprite

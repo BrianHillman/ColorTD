@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,6 +17,8 @@ public class UnevolvedTower extends GenericTower{
 	float dx = 0;
 	float dy = 0;
 	final int TOWERSNAPSIZE = 8;
+	public boolean validPosition = true;
+	
 	public UnevolvedTower(int x, int y,final Sprite sprite) {
 		
 		super(x, y);
@@ -24,7 +27,8 @@ public class UnevolvedTower extends GenericTower{
 		spawnY = y;
 		super.name = "Prism";
 		super.size( sprite.getWidth(), sprite.getHeight());
-		
+		rect = new Rectangle(x,y,sprite.getWidth(),sprite.getHeight());
+
 		
 		
 		this.addListener((new DragListener() {
@@ -37,6 +41,7 @@ public class UnevolvedTower extends GenericTower{
 					Vector2 screenCoords = new Vector2();
 					localToStageCoordinates(screenCoords.set(x, y));
 				 moveTo(screenCoords.x, screenCoords.y);
+				 
 			}
 
 		}));
@@ -52,7 +57,18 @@ public class UnevolvedTower extends GenericTower{
 	
 		
 	}
-	
+	private boolean validPosition(){
+		for(int x = 0; x < this.getStage().getActors().size; x++){
+			if(this.getStage().getActors().get(x) instanceof GenericTower && this.getStage().getActors().get(x) != this) {
+				if(rect.overlaps(((GenericTower)this.getStage().getActors().get(x)).rect)){
+					return false;
+				}
+			}
+		}
+		
+		return true;
+		
+	}
 	
 	private void setDYDX(float x, float y){
 		dx =  x - sprite.getOriginX() + sprite.getWidth()/2;
@@ -73,11 +89,33 @@ public class UnevolvedTower extends GenericTower{
 		
 		super.setX(roundedX); //round to nearest fifth pixel;
 		super.setY(roundedY);
+		updateRect();
+		validPosition = validPosition();
+	}
+	
+	public void updateRect(){
+		rect.setPosition(this.getX(), this.getY());
+	}
+	
+	@Override
+	public void act(float delta){
+		if(!validPosition){
+			validPosition = validPosition();
+		}
 	}
 	
 	@Override
 	public void draw (SpriteBatch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
+		if(validPosition){
+			super.draw(batch, parentAlpha);
+		}else{
+			sprite.setColor(1,1,1,.9f);
+			super.draw(batch, parentAlpha);
+			sprite.setColor(1,0,0,.5f);
+			super.draw(batch, parentAlpha);
+			sprite.setColor(1,1,1,1);
+			
+		}
 	}
 	
 	
