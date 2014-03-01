@@ -38,9 +38,8 @@ public class Enemy extends Actor{
 	float timeTillSpawn;
 	
 	boolean spawned;
-	
+	ShapeRenderer shapeRenderer = new ShapeRenderer();
 	public boolean isTouched;
-	
 	
 	public Enemy(String name, int hp, int speed, Sprite sprite, Boolean flying,Array<Pair> path, float timeTillSpawn){
 		this.name = name;
@@ -98,6 +97,7 @@ public class Enemy extends Actor{
 				
 				if(step >= path.size) {
 					this.remove();
+					Gdx.app.log("Enemy", "BOOM!!! ENEMY REACHED BASE");
 					return;
 				}
 				
@@ -133,8 +133,6 @@ public class Enemy extends Actor{
 	public void drawBorder(){
 		Vector2 stageCoords = new Vector2();
 		localToParentCoordinates(stageCoords.set(this.getX(),this.getY()));
-		
-		
 		ShapeRenderer shapeRenderer = new ShapeRenderer(100);
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(0,1,0,1);
@@ -142,6 +140,24 @@ public class Enemy extends Actor{
 		//shapeRenderer.rect(stageCoords.x-5, stageCoords.y-5, super.getWidth()+10, super.getHeight()+10);
 		shapeRenderer.end();	
 		
+		
+	}
+	public void drawHealthBar(){
+	      float hpdepletion =  ((super.getWidth()/2) * (1f-(((float)health)/((float)maxHealth))));
+	      
+			
+	      shapeRenderer.setColor(1, 0, 0, 1f);
+	      shapeRenderer.setProjectionMatrix(super.getStage().getCamera().combined);		
+
+	      shapeRenderer.begin(ShapeType.Filled);
+	      Vector2 stageCoords = new Vector2();
+	      
+	      stageCoords.set(this.getHeight()+this.getX(),this.getY());
+
+	      shapeRenderer.rect(this.getX() + hpdepletion ,this.getHeight() + this.getY(), this.getWidth() - hpdepletion*2, 5);
+	      
+	      //shapeRenderer.filledRect(-25f, -25f, 50, 50, Color.RED, greenClear, greenClear, Color.RED);
+	      shapeRenderer.end();
 	}
 	
 	@Override
@@ -150,10 +166,17 @@ public class Enemy extends Actor{
 		highlightedSprite.setPosition(super.getX()-(highlightedSprite.getWidth() - super.getWidth())/2, super.getY()-(highlightedSprite.getHeight() - super.getHeight())/2);
 		if(spawned)sprite.draw(batch);
 		
+		if(health < maxHealth){
+			batch.end();
+			drawHealthBar();
+			batch.begin();
+		}
+		
+		
+		
 		if (isTouched ){
-			//batch.end();
-			//drawBorder();
-			//batch.begin();
+			
+			
 			highlightedSprite.draw(batch);
 			
 		}

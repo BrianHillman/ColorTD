@@ -4,6 +4,8 @@
 package com.brian.mainscreens;
 
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -27,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.brian.actors.Enemy;
+import com.brian.actors.EnemyWaveLoader;
 import com.brian.actors.GenericTower;
 import com.brian.actors.KeepButton;
 import com.brian.actors.UnevolvedTower;
@@ -63,12 +66,16 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	public GenericTower[] towersBeingPlaced = new GenericTower[5];
 	
-	EnemyLoader loader;
-	TowerLoader towerLoader;
+	Json json = new Json();
+	EnemyLoader loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
+	
+	TowerLoader towerLoader = json.fromJson(TowerLoader.class, Gdx.files.internal("data/towers.json"));
+
 	
 	private FPSLogger fpsLogger;
 	
 	KeepButton keepButton = new KeepButton();
+	EnemyWaveLoader enemyWaveLoader = new EnemyWaveLoader();
 
 	public GameScreen(){
 		this.stage = new Stage( VIEWPORT_WIDTH, VIEWPORT_HEIGHT, true );
@@ -82,8 +89,6 @@ public class GameScreen implements Screen, InputProcessor {
         
         
    
-        loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
-        towerLoader = json.fromJson(TowerLoader.class, Gdx.files.internal("data/towers.json"));
         createUnevolvedTowers();
         
         stage.addActor(keepButton);
@@ -94,22 +99,23 @@ public class GameScreen implements Screen, InputProcessor {
 		Array<Pair> path = new Array<Pair>();
 		
 		path.add(new Pair(1,1));
-		path.add(new Pair(100,100));
-		path.add(new Pair(200,100));
-		path.add(new Pair(200,450));
-		path.add(new Pair(500,450));
-		path.add(new Pair(500,100));
-		path.add(new Pair(760,100));
-		path.add(new Pair(760,480));
+		path.add(new Pair(100,50));
+		path.add(new Pair(150,50));
+		path.add(new Pair(150,225));
+		path.add(new Pair(300,225));
+		path.add(new Pair(300,50));
+		path.add(new Pair(375,50));
+		path.add(new Pair(375,280));
 		
 		//stage.clear();
 		//just loading a sample level for now.
 		
-		
+		 ArrayList<Enemy> enemyWave = enemyWaveLoader.loadLevel(path);
+
 		 
-		for(int ii = 1; ii < 10; ii++){
-			Enemy temp = loader.makeEnemy("Goblin", path,10f/10*ii);
-			stage.addActor(temp);
+		for(int ii = 0; ii < enemyWave.size(); ii++){
+			
+			stage.addActor(enemyWave.get(ii));
 		}
 		
 		
@@ -125,14 +131,24 @@ public class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		// update the stage
-		stage.act();
+        if(gameState != GAMESTATEPAUSE)
+        	stage.act();
+        
 		// draw the stage
 		stage.draw();
 		fpsLogger.log();
 		
 		
+		boolean enemiesAlive = false;
+		for(int x = 0; x < stage.getActors().size; x++){
+			if(stage.getActors().get(x) instanceof Enemy) enemiesAlive = true;
+		}
 		
-		
+		if(!enemiesAlive && GAMESTATEROUND == gameState){
+			gameState = GAMESTATEBETWEENROUNDS;
+			createUnevolvedTowers();
+			
+		}
 		
 		
 
@@ -300,7 +316,7 @@ public class GameScreen implements Screen, InputProcessor {
 				towersBeingPlaced[x] = null;
 			}
 		}
-		
+		gameState = GAMESTATEROUND;
 		loadLevel(10);
 	}
 	

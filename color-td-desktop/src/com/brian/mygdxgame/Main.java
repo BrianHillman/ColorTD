@@ -12,11 +12,11 @@ public class Main {
 		cfg.width = 800;
 		cfg.height = 480;
 		
-		
 		/*speedspeedspeedspeed
 		 * Enable to uncap fps, ~ 4700 now :)
 		 * 
-		 */		
+		 */
+		
 		//cfg.vSyncEnabled = false; 
 		//cfg.foregroundFPS = 0;
 		

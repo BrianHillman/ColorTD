@@ -123,7 +123,7 @@ public class GenericTower extends Actor{
 				if(dist <= range ){
 					Bullet shot  = new Bullet((Enemy) super.getStage().getActors().get(x), bullet.damage, bullet.speed, bullet.type, bullet.sprite, sprite.getHeight()/2 + getX(), sprite.getWidth()/2 + getY());
 					super.getStage().addActor(shot);
-					Gdx.app.log("Attacking", "PEW PEW PEW " + ((Enemy) super.getStage().getActors().get(x)).hashCode());
+					//Gdx.app.log("Attacking", "PEW PEW PEW " + ((Enemy) super.getStage().getActors().get(x)).hashCode());
 					return true;
 				}
 				

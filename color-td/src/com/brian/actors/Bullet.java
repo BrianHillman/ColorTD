@@ -34,12 +34,12 @@ public class Bullet extends Actor{
 			//remove self.
 		
 		
+		
 		Vector2 direction = new Vector2(target.getCenter().x - (this.getX()+this.getWidth()/2),
 				
 								target.getCenter().y - (this.getY()+this.getHeight()/2));
 		
 		if(Math.abs(direction.x) < 10 & Math.abs(direction.y) <  10) {
-			Gdx.app.log("bullet", "hit target");
 			target.handleHit(this);
 			remove();
 		}
