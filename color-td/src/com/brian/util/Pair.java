@@ -1,8 +1,8 @@
 package com.brian.util;
 
 public class Pair {
-	
-	 public int x;
+	public boolean visited = false; 
+		public int x;
 	  public int y;
 	  
 	  public Pair(int x, int y){
