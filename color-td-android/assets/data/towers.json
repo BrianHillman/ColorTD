@@ -27,6 +27,16 @@
         	"bullet":"none"
         	
         	
+        },
+        {
+            "name":"Waypoint",
+        	"attackSpeed":0,
+        	"sprite":"waypoint.png",
+        	"damage":0,
+        	"range":0,
+        	"bullet":"none"
+        	
+        	
         }
         
     ],

@@ -43,8 +43,8 @@ public class EnemyWaveLoader{
 		
 		
 		 
-		for(int ii = 0; ii < 100; ii++){
-			Enemy temp = loader.makeEnemy("Goblin", path, ii/10f );
+		for(int ii = 0; ii < 10; ii++){
+			Enemy temp = loader.makeEnemy("Goblin", path, ii/1f );
 			enemies.add(temp);
 		}
 		return enemies;

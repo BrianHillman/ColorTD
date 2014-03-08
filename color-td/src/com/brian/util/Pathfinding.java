@@ -44,6 +44,7 @@ public class Pathfinding {
 				//then we see if they hit a tower
 				for(int i = 0; i < stage.getActors().size; i++){
 					if(stage.getActors().get(i) instanceof GenericTower){
+						if(((GenericTower) stage.getActors().get(i)).name.equalsIgnoreCase("waypoint")) continue;
 						Rectangle rect = ((GenericTower) stage.getActors().get(i) ).rect;
 						if(rect.contains(posX, posY)){
 							grid[x][y].visited = true;
@@ -75,6 +76,7 @@ public class Pathfinding {
 					Pair translated = new Pair(grid[temp.x][temp.y].x,grid[temp.x][temp.y].y);
 					resultPath.add(translated);
 				}
+				return resultPath;
 			}
 			
 			Array<Pair> unvisitedNeighbors = getUnvisitedNeighbors(grid,currPath.get(currPath.size -1).x,currPath.get(currPath.size -1).y);
@@ -101,7 +103,7 @@ public class Pathfinding {
 	private Array<Pair> getUnvisitedNeighbors(Pair[][] grid,int x, int y){
 		Array<Pair> result = new Array<Pair>();
 		//above
-		if(y < grid[0].length){
+		if(y < grid[0].length-1){
 			if(!grid[x][y+1].visited){
 				grid[x][y+1].visited = true;
 				result.add(new Pair(x,y+1));
@@ -115,7 +117,7 @@ public class Pathfinding {
 			}
 		}
 		//left of
-		if(x < grid.length){
+		if(x < grid.length-1){
 			if(!grid[x+1][y].visited){
 				grid[x+1][y].visited = true;
 				result.add(new Pair(x+1,y));

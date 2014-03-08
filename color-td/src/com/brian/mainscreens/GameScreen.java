@@ -35,6 +35,7 @@ import com.brian.actors.KeepButton;
 import com.brian.actors.UnevolvedTower;
 import com.brian.util.EnemyLoader;
 import com.brian.util.Pair;
+import com.brian.util.Pathfinding;
 import com.brian.util.TowerLoader;
 
 /**
@@ -76,7 +77,9 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	KeepButton keepButton = new KeepButton();
 	EnemyWaveLoader enemyWaveLoader = new EnemyWaveLoader();
-
+	Array<Pair> waypoints = new Array<Pair>();
+	Array<Pair> path = null;
+	
 	public GameScreen(){
 		this.stage = new Stage( VIEWPORT_WIDTH, VIEWPORT_HEIGHT, true );
         Gdx.input.setInputProcessor(stage);
@@ -84,8 +87,12 @@ public class GameScreen implements Screen, InputProcessor {
 		Json json = new Json();
 
 		
-		
-	
+		waypoints.add(new Pair(0,0));
+		stage.addActor(towerLoader.makeTower("waypoint", 8, 16));
+		waypoints.add(new Pair(20,20));
+		stage.addActor(towerLoader.makeTower("waypoint", 8*21, 22*8));
+		waypoints.add(new Pair(10,10));
+		stage.addActor(towerLoader.makeTower("waypoint", 8*11, 8*12));
         
         
    
@@ -96,28 +103,30 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	public void loadLevel(int x){
 		
-		Array<Pair> path = new Array<Pair>();
 		
-		path.add(new Pair(1,1));
-		path.add(new Pair(100,50));
-		path.add(new Pair(150,50));
-		path.add(new Pair(150,225));
-		path.add(new Pair(300,225));
-		path.add(new Pair(300,50));
-		path.add(new Pair(375,50));
-		path.add(new Pair(375,280));
+
+	
+	
+
+		
+		
+		Pathfinding pathfinder = new Pathfinding();
+		path = pathfinder.getPath(waypoints, stage);
+		
+		
 		
 		//stage.clear();
 		//just loading a sample level for now.
 		
-		 ArrayList<Enemy> enemyWave = enemyWaveLoader.loadLevel(path);
+		/*
+		ArrayList<Enemy> enemyWave = enemyWaveLoader.loadLevel(path);
 
 		 
 		for(int ii = 0; ii < enemyWave.size(); ii++){
 			
 			stage.addActor(enemyWave.get(ii));
 		}
-		
+		*/
 		
 		
 	}
@@ -130,7 +139,12 @@ public class GameScreen implements Screen, InputProcessor {
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		// update the stage
+		
+        
+        
+        
+        
+        
         if(gameState != GAMESTATEPAUSE)
         	stage.act();
         
@@ -151,6 +165,19 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 		
 		
+		if(path != null){
+			shapeRenderer.begin(ShapeType.Line);
+			shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+			for(int x = 1; x < path.size;x++){
+				
+					
+				 shapeRenderer.setColor(1, 1, 0, 1);
+				 shapeRenderer.line(path.get(x-1).x, path.get(x-1).y, path.get(x).x, path.get(x).y);
+				
+			}
+			shapeRenderer.end();
+		}
+		 
 
 	}
 	
