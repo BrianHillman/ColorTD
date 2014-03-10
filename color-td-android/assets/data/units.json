@@ -2,7 +2,7 @@
     "enemies": [
         {
             "name": "Goblin",
-            "speed": 10000,
+            "speed": 100,
             "maxHealth": 2,
             "sprite": "goblin.png",
             "flying": false

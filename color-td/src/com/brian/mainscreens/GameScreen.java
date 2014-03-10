@@ -28,15 +28,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.brian.actors.Enemy;
-import com.brian.actors.EnemyWaveLoader;
-import com.brian.actors.GenericTower;
-import com.brian.actors.KeepButton;
-import com.brian.actors.UnevolvedTower;
-import com.brian.util.EnemyLoader;
-import com.brian.util.Pair;
-import com.brian.util.Pathfinding;
-import com.brian.util.TowerLoader;
+import com.brian.actors.*;
+import com.brian.util.*;
 
 /**
  * @author Brian
@@ -71,7 +64,8 @@ public class GameScreen implements Screen, InputProcessor {
 	EnemyLoader loader = json.fromJson(EnemyLoader.class, Gdx.files.internal("data/units.json"));
 	
 	TowerLoader towerLoader = json.fromJson(TowerLoader.class, Gdx.files.internal("data/towers.json"));
-
+	
+	GameFrame frame = new GameFrame();
 	
 	private FPSLogger fpsLogger;
 	
@@ -85,40 +79,43 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(stage);
         fpsLogger = new FPSLogger();
 		Json json = new Json();
-
+		
+		
 		
 		waypoints.add(new Pair(0,0));
 		stage.addActor(towerLoader.makeTower("waypoint", 8, 16));
+		
+		waypoints.add(new Pair(0,20));
+		stage.addActor(towerLoader.makeTower("waypoint", 8, 22*8));
+		
 		waypoints.add(new Pair(20,20));
 		stage.addActor(towerLoader.makeTower("waypoint", 8*21, 22*8));
+		
+		waypoints.add(new Pair(20,10));
+		stage.addActor(towerLoader.makeTower("waypoint", 8*21, 12*8));
+		
 		waypoints.add(new Pair(10,10));
 		stage.addActor(towerLoader.makeTower("waypoint", 8*11, 8*12));
         
         
    
         createUnevolvedTowers();
+        frame.toBack();
+        stage.addActor(frame);
         
         stage.addActor(keepButton);
 	}
 	
 	public void loadLevel(int x){
-		
-		
-
-	
-	
-
-		
-		
 		Pathfinding pathfinder = new Pathfinding();
 		path = pathfinder.getPath(waypoints, stage);
 		
-		
+
 		
 		//stage.clear();
 		//just loading a sample level for now.
 		
-		/*
+		
 		ArrayList<Enemy> enemyWave = enemyWaveLoader.loadLevel(path);
 
 		 
@@ -126,7 +123,7 @@ public class GameScreen implements Screen, InputProcessor {
 			
 			stage.addActor(enemyWave.get(ii));
 		}
-		*/
+		
 		
 		
 	}
@@ -135,16 +132,8 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	@Override
 	public void render(float delta) {
-	
-		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-        
-        
-        
-        
-        
         if(gameState != GAMESTATEPAUSE)
         	stage.act();
         
@@ -152,29 +141,27 @@ public class GameScreen implements Screen, InputProcessor {
 		stage.draw();
 		fpsLogger.log();
 		
+		//TODO fix this shitty hack of a line.
+        frame.toBack();
+
 		
 		boolean enemiesAlive = false;
 		for(int x = 0; x < stage.getActors().size; x++){
 			if(stage.getActors().get(x) instanceof Enemy) enemiesAlive = true;
 		}
-		
 		if(!enemiesAlive && GAMESTATEROUND == gameState){
 			gameState = GAMESTATEBETWEENROUNDS;
 			createUnevolvedTowers();
-			
 		}
-		
-		
 		if(path != null){
 			shapeRenderer.begin(ShapeType.Line);
 			shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+			shapeRenderer.setColor(1, 1, 0, 1);
 			for(int x = 1; x < path.size;x++){
-				
-					
-				 shapeRenderer.setColor(1, 1, 0, 1);
 				 shapeRenderer.line(path.get(x-1).x, path.get(x-1).y, path.get(x).x, path.get(x).y);
-				
 			}
+			shapeRenderer.line(400, 0, 400,400);
+			shapeRenderer.line(0, 280, 400,280);
 			shapeRenderer.end();
 		}
 		 
