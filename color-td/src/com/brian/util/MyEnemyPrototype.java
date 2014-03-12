@@ -6,4 +6,6 @@ public class MyEnemyPrototype {
 	   public int speed;
 	   public String sprite;
 	   public boolean flying;
+	   public float healthMultiplier;
+	   public float spawnTime;
 	}

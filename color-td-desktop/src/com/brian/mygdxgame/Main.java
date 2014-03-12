@@ -14,7 +14,6 @@ public class Main {
 		
 		/*speedspeedspeedspeed
 		 * Enable to uncap fps, ~ 4700 now :)
-		 * 
 		 */
 		
 		cfg.vSyncEnabled = false; 

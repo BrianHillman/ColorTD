@@ -32,7 +32,7 @@ public class Enemy extends Actor{
 	Sprite sprite;
 	public Sprite highlightedSprite;
 	boolean flying;
-	String name;
+	public String name;
 	
 	//countdown of the time until this unit is spawned. 
 	float timeTillSpawn;
@@ -72,7 +72,7 @@ public class Enemy extends Actor{
 		
 		});
 		super.setVisible(false);
-		Gdx.app.log("Enemy", "Created enemy " + name + "  HP: "+hp);
+		Gdx.app.log("Enemy", "Created enemy " + name + "  HP: "+hp +"  Spawning in:"+timeTillSpawn);
 		
 	}
 	
@@ -87,6 +87,7 @@ public class Enemy extends Actor{
 			timeTillSpawn -= delta;
 			if(timeTillSpawn <= 0){
 				spawn();
+				return;
 			}else{
 				return;
 			}

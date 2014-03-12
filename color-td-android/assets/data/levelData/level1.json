@@ -1,0 +1,33 @@
+[[
+	{
+		"class" : "com.brian.util.MyEnemyPrototype",
+		"name": "Goblin",
+		"spawnTime": 1,
+		"healthMultiplier": 1.0
+	},
+	{
+		"class" : "com.brian.util.MyEnemyPrototype",
+		"name": "Goblin",
+		"spawnTime": 1.2,
+		"healthMultiplier": 1.2
+	},
+	{
+		"class" : "com.brian.util.MyEnemyPrototype",
+		"name": "Goblin",
+		"spawnTime": 1.4,
+		"healthMultiplier": 1.4
+	},
+	{
+		"class" : "com.brian.util.MyEnemyPrototype",
+		"name": "Goblin",
+		"spawnTime": 1.6,
+		"healthMultiplier": 1.6
+	},
+	{
+		"class" : "com.brian.util.MyEnemyPrototype",
+		"name": "Boss",
+		"spawnTime": 1.8,
+		"healthMultiplier": 1.8
+	}
+	
+]]
